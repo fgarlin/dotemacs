@@ -100,9 +100,6 @@ This command does the inverse of `fill-paragraph'.
   (auto-save-default nil)
   (create-lockfiles nil)
 
-  ;; Enable column display.
-  (column-number-mode t)
-
   ;; Better scrolling.
   (scroll-conservatively 101)
   (scroll-margin 5)

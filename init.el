@@ -145,6 +145,11 @@ This command does the inverse of `fill-paragraph'.
 ;; Built-in packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Colorize in the *compile* buffer.
+(use-package ansi-color
+  :ensure nil
+  :hook (compilation-filter . ansi-color-compilation-filter))
+
 ;; Enable automatic reverting of files when they have been changed by another
 ;; program. NOTE: Auto revert will not revert a buffer if it has unsaved
 ;; changes, or if its file on disk is deleted or renamed.

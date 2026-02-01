@@ -225,6 +225,11 @@ This command does the inverse of `fill-paragraph'.
   :ensure nil
   :init (savehist-mode))
 
+;; Save the cursor position when closing a file and restore it upon reopening.
+(use-package saveplace
+  :ensure nil
+  :init (save-place-mode))
+
 ;; TRAMP tweaks.
 ;; https://coredumped.dev/2025/06/18/making-tramp-go-brrrr.
 (use-package tramp

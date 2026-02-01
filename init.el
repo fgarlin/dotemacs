@@ -180,7 +180,10 @@ This command does the inverse of `fill-paragraph'.
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'always)
   (delete-by-moving-to-trash t)
-  (dired-dwim-target t))
+  (dired-dwim-target t)
+  ;; Human-readable sizes (-h) and natural sort (-v) (file1, file, file10
+  ;; instead of file1, file10, file2). NOTE: Requires GNU coreutils.
+  (dired-listing-switches "-alh -v --group-directories-first"))
 
 ;; Enable electric pairs. Typing an open parenthesis automatically inserts the
 ;; corresponding closing parenthesis.

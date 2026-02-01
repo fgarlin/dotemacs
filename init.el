@@ -254,10 +254,11 @@ This command does the inverse of `fill-paragraph'.
   (dolist (method '("ssh" "scp"))
     (tramp-set-completion-function
      method (append (tramp-get-completion-function method)
-                    (mapcar (lambda (file) `(tramp-parse-sconfig ,file))
-                            (directory-files
-                             "~/.ssh/conf.d/"
-                             'full directory-files-no-dot-files-regexp)))))
+                    (when (file-directory-p "~/.ssh/conf.d/")
+                      (mapcar (lambda (file) `(tramp-parse-sconfig ,file))
+                              (directory-files
+                               "~/.ssh/conf.d/"
+                               'full directory-files-no-dot-files-regexp))))))
   ;; Use direct async
   (connection-local-set-profile-variables
    'remote-direct-async-process

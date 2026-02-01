@@ -304,14 +304,6 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   (auto-dark-allow-powershell t)
   :init (auto-dark-mode))
 
-;; Jump to arbitrary positions in visible text.
-(use-package avy
-  :ensure t
-  :custom
-  ;; Use all lowercase letters (a-z) as jump keys.
-  (avy-keys (mapcar (lambda (n) (+ n ?a)) (number-sequence 0 25)))
-  :bind ("C-;" . avy-goto-word-0))
-
 ;; Dumb Jump provides "jump to definition" functionality for many programming
 ;; languages. It is a zero-configuration alternative to stored indexes (TAGS)
 ;; and background processes (LSP) that only relies on ripgrep or grep.

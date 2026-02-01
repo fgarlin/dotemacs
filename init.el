@@ -530,13 +530,6 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :ensure t
   :init (dtrt-indent-global-mode))
 
-;; Move the current line up or down. If a region is marked, it will move the
-;; region instead.
-(use-package move-text
-  :ensure t
-  :bind (("M-p" . move-text-up)
-         ("M-n" . move-text-down)))
-
 ;; Better mode line.
 (use-package mood-line
   :ensure t

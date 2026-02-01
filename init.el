@@ -619,7 +619,7 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Load custom files.
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "user-lisp" user-emacs-directory))
 (require 'nasal-mode)
 
 ;; Load configuration specific to this Emacs installation, only if it exists.

@@ -556,6 +556,41 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :ensure t
   :init (global-disable-mouse-mode))
 
+(use-package eglot
+  :ensure nil
+  :custom
+  ;; Disable some annoying LSP features.
+  (eglot-ignored-server-capabilities
+   '(:semanticTokensProvider)))
+
+(use-package treesit
+  :ensure nil
+  :preface
+  (defun mp-setup-install-grammars ()
+    "Install Tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+             '((c . ("https://github.com/tree-sitter/tree-sitter-c" "v0.23.4"))
+               (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp" "v0.23.4"))
+               (python . ("https://github.com/tree-sitter/tree-sitter-python" "v0.20.4"))
+               (rust . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.21.2"))
+               (toml . ("https://github.com/tree-sitter/tree-sitter-toml" "v0.5.1"))))
+      (add-to-list 'treesit-language-source-alist grammar)
+      ;; Only install `grammar' if we don't already have it
+      ;; installed. However, if you want to *update* a grammar then
+      ;; this obviously prevents that from happening.
+      (unless (treesit-language-available-p (car grammar))
+        (treesit-install-language-grammar (car grammar)))))
+  :config
+  (mp-setup-install-grammars)
+  ;; Remap to tree-sitter major modes.
+  (dolist (mapping
+           '((c-mode . c-ts-mode)
+             (c++-mode . c++-ts-mode)
+             (python-mode . python-ts-mode)
+             (conf-toml-mode . toml-ts-mode)))
+    (add-to-list 'major-mode-remap-alist mapping)))
+
 ;;;;;;;;;;;;;;;
 ;; Languages ;;
 ;;;;;;;;;;;;;;;
@@ -570,57 +605,8 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   ;; Do syntax highlighting inside code blocks.
   (markdown-fontify-code-blocks-natively t))
 
-;; C/C++ stuff.
-(use-package cc-mode
-  :ensure nil
-  :config
-  ;; My own C++ style, heavily based on k&r
-  (c-add-style
-   "my-c-style"
-   '(
-     ;; Forget about the ancient K&R style parameters
-     (c-recognize-knr-p . nil)
-     ;; 4 spaces
-     (c-basic-offset . 4)
-     ;; Disabled for now: Tabs are 8 spaces
-     ;; (tab-width . 4)           ;; Tabs are 4 spaces
-     (c-comment-only-line-offset . 0)
-     (c-hanging-braces-alist
-      (brace-list-open)
-      (brace-entry-open)
-      (substatement-open after)
-      (block-close . c-snug-do-while)
-      (arglist-cont-nonempty))
-     (c-cleanup-list brace-else-brace)
-     (c-offsets-alist
-      ;; Copied and pasted from K&R style
-      (statement-block-intro . +)
-      (substatement-open . 0)
-      (substatement-label . 0)
-      (statement-cont . +)
-      (label . 0)
-      ;; No indentation for case labels in switch statements
-      (case-label . 0)
-      ;; No indentation inside namespaces
-      (innamespace . 0)
-      ;; No indentation inside extern
-      (inextern-lang . 0)
-      ;; Don't indent this kind of thing:
-      ;;
-      ;; class MyClass {
-      ;; public:
-      ;;     MyClass()
-      ;;         {        // <-- Don't do this
-      (inline-open . 0)
-      ;; No indentation for lambda blocks
-      (inlambda . 0))))
-  (setq c-default-style "my-c-style"))
-
 ;; C/C++ stuff (Tree-sitter).
 (use-package c-ts-mode
-  ;; FIXME: Don't use tree-sitter for now until the grammar ABI version
-  ;; situation improves.
-  :disabled
   :ensure nil
   :preface
   (defun my/c-ts-indent-style ()
@@ -640,6 +626,10 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :custom
   (c-ts-mode-indent-offset 4)
   (c-ts-mode-indent-style #'my/c-ts-indent-style))
+
+;; CMake mode.
+(use-package cmake-mode
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; Load custom lisp ;;

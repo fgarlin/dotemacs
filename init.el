@@ -244,7 +244,28 @@ This command does the inverse of `fill-paragraph'.
   ;; Disable version control on remote buffers.
   (vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
                                 vc-ignore-dir-regexp
-                                tramp-file-name-regexp)))
+                                tramp-file-name-regexp))
+  ;; Looking for version control backends is expensive. Limit the search to git.
+  (vc-handled-backends '(Git))
+  :config
+  ;; OpenSSH configuration files can use an Include option for further
+  ;; configuration files. Default TRAMP host name completion ignores this option.
+  ;; Use all files in ~/.ssh/conf.d/ for host name completion:
+  (dolist (method '("ssh" "scp"))
+    (tramp-set-completion-function
+     method (append (tramp-get-completion-function method)
+                    (mapcar (lambda (file) `(tramp-parse-sconfig ,file))
+                            (directory-files
+                             "~/.ssh/conf.d/"
+                             'full directory-files-no-dot-files-regexp)))))
+  ;; Use direct async
+  (connection-local-set-profile-variables
+   'remote-direct-async-process
+   '((tramp-direct-async-process . t)))
+  (connection-local-set-profiles
+   '(:application tramp :protocol "scp")
+   'remote-direct-async-process)
+  (setq magit-tramp-pipe-stty-settings 'pty))
 
 ;; Use the built-in `whitespace-mode' to highlight incorrect indentation.
 (use-package whitespace

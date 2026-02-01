@@ -215,12 +215,6 @@ This command does the inverse of `fill-paragraph'.
   :ensure nil
   :init (recentf-mode))
 
-;; Enable `repeat-mode', which allows certain commands to be repeated by typing
-;; a single key after typing the full key sequence once.
-(use-package repeat
-  :ensure nil
-  :init (repeat-mode))
-
 ;; The built-in `savehist' package keeps track of user inputs and stores them
 ;; across sessions. The user will see their latest choices closer to the top.
 (use-package savehist

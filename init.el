@@ -100,8 +100,6 @@ This command does the inverse of `fill-paragraph'.
   (auto-save-default nil)
   (create-lockfiles nil)
 
-  ;; Display absolute line numbers.
-  (display-line-numbers t)
   ;; Enable column display.
   (column-number-mode t)
 
@@ -184,6 +182,13 @@ This command does the inverse of `fill-paragraph'.
   ;; Human-readable sizes (-h) and natural sort (-v) (file1, file, file10
   ;; instead of file1, file10, file2). NOTE: Requires GNU coreutils.
   (dired-listing-switches "-alh -v --group-directories-first"))
+
+;; Display absolute line numbers on programming modes.
+(use-package display-line-numbers
+  :ensure nil
+  :hook (prog-mode . display-line-numbers-mode)
+  :custom
+  (display-line-numbers-type t))
 
 ;; Enable electric pairs. Typing an open parenthesis automatically inserts the
 ;; corresponding closing parenthesis.

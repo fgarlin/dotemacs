@@ -492,7 +492,9 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :bind ("C-x g" . magit-status)
   :custom
   ;; Show more granular diffs.
-  (magit-diff-refine-hunk t))
+  (magit-diff-refine-hunk t)
+  ;; Use auth-source for passwords.
+  (magit-process-find-password-functions '(magit-process-password-auth-source)))
 
 ;; Source control gutter indicators.
 (use-package diff-hl

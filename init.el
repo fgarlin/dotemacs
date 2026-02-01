@@ -60,7 +60,9 @@ This command does the inverse of `fill-paragraph'.
       (fill-paragraph)))
 
   :bind
-  (("C-x C-k" . kill-current-buffer)
+  (("C-z" . undo-only)
+   ("C-S-z" . undo-redo)
+   ("C-x C-k" . kill-current-buffer)
    ("C-'" . duplicate-dwim)
    ("M-o" . other-window)
    ("M-Q" . my/unfill-paragraph))

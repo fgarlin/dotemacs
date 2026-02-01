@@ -531,7 +531,9 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;; Better mode line.
 (use-package mood-line
   :ensure t
-  :init (mood-line-mode))
+  :init (mood-line-mode)
+  :custom
+  (mood-line-format mood-line-format-default-extended))
 
 ;; Disable the mouse. I've used Emacs for a while now and I've acquired some
 ;; nasty habits during that time. Hopefully I can retrain myself.

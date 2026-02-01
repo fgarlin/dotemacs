@@ -100,8 +100,8 @@ This command does the inverse of `fill-paragraph'.
   (auto-save-default nil)
   (create-lockfiles nil)
 
-  ;; Display relative line numbers.
-  (display-line-numbers 'relative)
+  ;; Display absolute line numbers.
+  (display-line-numbers t)
   ;; Enable column display.
   (column-number-mode t)
 

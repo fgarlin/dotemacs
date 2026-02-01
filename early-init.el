@@ -41,7 +41,7 @@
 ;; Emacs has three faces. The default face is the only one that must have an
 ;; absolute :height value. Everything else uses a floating point value, which is
 ;; understood as a multiple of the default.
-(set-face-attribute 'default nil :family "Iosevka" :weight 'medium :height 140)
+(set-face-attribute 'default nil :family "Iosevka" :weight 'medium :height 150)
 (set-face-attribute 'fixed-pitch nil :family "Iosevka" :weight 'medium :height 1.0)
 (set-face-attribute 'variable-pitch nil :family "Sans" :weight 'medium :height 1.0)
 

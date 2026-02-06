@@ -621,8 +621,8 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
       ((n-p-gp nil nil "namespace_definition") grand-parent 0)
       ;; Do not indent preprocessor statements.
       ((node-is "preproc") column-0 0)
-      ;; Indent the requires clause under the template line.
-      ((parent-is "template_declaration") parent-bol c-ts-mode-indent-offset)
+      ;; Indent requires clause under template.
+      ((node-is "requires_clause") parent c-ts-mode-indent-offset)
       ;; Align function arguments to the start of the first one, offset if standalone.
       ((match nil "argument_list" nil 1 1) parent-bol c-ts-mode-indent-offset)
       ((parent-is "argument_list") (nth-sibling 1) 0)

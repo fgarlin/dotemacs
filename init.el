@@ -173,13 +173,6 @@ Prompt for language with prefix argument."
   (auto-revert-verbose nil)
   :init (global-auto-revert-mode))
 
-;; Basically every program out there will delete the selected text as soon as
-;; the user types something. Emacs does not do this by default, but it does have
-;; a built-in package.
-(use-package delsel
-  :ensure nil
-  :init (delete-selection-mode))
-
 ;; Some custom configuration for Dired.
 (use-package dired
   :ensure nil

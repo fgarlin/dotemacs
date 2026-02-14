@@ -307,14 +307,20 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;; External packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Theme setup. auto-dark is used to automatically toggle between a light theme
-;; and a dark theme depending on whether dark mode is enabled in the system.
-(use-package auto-dark
+;; Theme setup.
+(use-package ef-themes
   :ensure t
+  :init
+  (ef-themes-take-over-modus-themes-mode 1)
+  :bind
+  (("<f5>" . modus-themes-rotate)
+   ("C-<f5>" . modus-themes-select)
+   ("M-<f5>" . modus-themes-load-random))
   :custom
-  (auto-dark-themes '((modus-vivendi-tinted) (modus-operandi-tinted)))
-  (auto-dark-allow-powershell t)
-  :init (auto-dark-mode))
+  (modus-themes-mixed-fonts t)
+  (modus-themes-italic-constructs t)
+  :config
+  (modus-themes-load-theme 'ef-light))
 
 ;; Dumb Jump provides "jump to definition" functionality for many programming
 ;; languages. It is a zero-configuration alternative to stored indexes (TAGS)

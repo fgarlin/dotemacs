@@ -71,6 +71,13 @@ Prompt for language with prefix argument."
           (message "Copied as Markdown code block%s"
                    (if lang (format " (%s)" lang) "")))))
 
+  (defun my/clear-recent-list ()
+    "Clear the recent file list."
+    (interactive)
+    (setq recentf-list nil)
+    (recentf-save-list)
+    (message "Recent file list cleared"))
+
   :bind
   (("C-z" . undo-only)
    ("C-S-z" . undo-redo)

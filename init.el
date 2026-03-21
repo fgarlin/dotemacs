@@ -60,16 +60,16 @@ This command does the inverse of `fill-paragraph'.
       (fill-paragraph)))
 
   (defun my/copy-as-markdown-code (&optional language)
-  "Copy the active region to the clipboard as a Markdown code block.
+    "Copy the active region to the clipboard as a Markdown code block.
 Prompt for language with prefix argument."
-  (interactive "P")
-  (if (use-region-p)
-      (let* ((text (buffer-substring-no-properties (region-beginning) (region-end)))
-             (lang (when (or language current-prefix-arg)
-                     (read-string "Language: "))))
-        (kill-new (format "```%s\n%s\n```" (or lang "") (string-trim text)))
-        (message "Copied as Markdown code block%s"
-                 (if lang (format " (%s)" lang) "")))))
+    (interactive "P")
+    (if (use-region-p)
+        (let* ((text (buffer-substring-no-properties (region-beginning) (region-end)))
+               (lang (when (or language current-prefix-arg)
+                       (read-string "Language: "))))
+          (kill-new (format "```%s\n%s\n```" (or lang "") (string-trim text)))
+          (message "Copied as Markdown code block%s"
+                   (if lang (format " (%s)" lang) "")))))
 
   :bind
   (("C-z" . undo-only)

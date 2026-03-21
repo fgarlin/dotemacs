@@ -320,7 +320,7 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   (modus-themes-mixed-fonts t)
   (modus-themes-italic-constructs t)
   :config
-  (modus-themes-load-theme 'ef-light))
+  (modus-themes-load-theme 'ef-day))
 
 ;; Dumb Jump provides "jump to definition" functionality for many programming
 ;; languages. It is a zero-configuration alternative to stored indexes (TAGS)

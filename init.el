@@ -563,13 +563,6 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :custom
   (mood-line-format mood-line-format-default-extended))
 
-(use-package eglot
-  :ensure nil
-  :custom
-  ;; Disable some annoying LSP features.
-  (eglot-ignored-server-capabilities
-   '(:semanticTokensProvider)))
-
 (use-package treesit
   :ensure nil
   :preface

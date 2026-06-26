@@ -562,12 +562,6 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :custom
   (mood-line-format mood-line-format-default-extended))
 
-;; Disable the mouse. I've used Emacs for a while now and I've acquired some
-;; nasty habits during that time. Hopefully I can retrain myself.
-(use-package disable-mouse
-  :ensure t
-  :init (global-disable-mouse-mode))
-
 (use-package eglot
   :ensure nil
   :custom

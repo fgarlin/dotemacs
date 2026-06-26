@@ -71,13 +71,6 @@ Prompt for language with prefix argument."
           (message "Copied as Markdown code block%s"
                    (if lang (format " (%s)" lang) "")))))
 
-  (defun my/clear-recent-list ()
-    "Clear the recent file list."
-    (interactive)
-    (setq recentf-list nil)
-    (recentf-save-list)
-    (message "Recent file list cleared"))
-
   :bind
   (("C-z" . undo-only)
    ("C-S-z" . undo-redo)
@@ -229,6 +222,13 @@ Prompt for language with prefix argument."
 ;; Keep track of recent files.
 (use-package recentf
   :ensure nil
+  :preface
+  (defun my/clear-recent-list ()
+    "Clear the recent file list."
+    (interactive)
+    (setq recentf-list nil)
+    (recentf-save-list)
+    (message "Recent file list cleared"))
   :init (recentf-mode))
 
 ;; The built-in `savehist' package keeps track of user inputs and stores them
@@ -306,9 +306,8 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
                       '(face indentation)
                     '(face tabs tab-mark)))
       (whitespace-mode)))
-  :init
-  (add-hook 'after-change-major-mode-hook
-            'my/whitespace-highlight-incorrect-indentation))
+  :hook
+  (after-change-major-mode . my/whitespace-highlight-incorrect-indentation))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; External packages ;;
@@ -334,11 +333,11 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;; and background processes (LSP) that only relies on ripgrep or grep.
 (use-package dumb-jump
   :ensure t
-  :init
-  ;; Use `dumb-jump' as an `xref' backend.
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-  ;; Use `completion-read' instead of a separate buffer with candidates.
-  (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
+  :custom
+  (dumb-jump-prefer-searcher 'rg)
+  (xref-show-definitions-function #'consult-xref)
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 ;; Corfu enhances in-buffer completion. Candidates are shown in a popup below or
 ;; above the point, and can be selected by moving up and down.
@@ -366,10 +365,9 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;; Cape provides extra completions or capfs (`completion-at-point-functions').
 (use-package cape
   :ensure t
-  :init
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block))
+  :hook (completion-at-point-functions . (cape-dabbrev
+                                          cape-file
+                                          cape-elisp-block)))
 
 ;; Vertico displays the minibuffer in a vertical layout. It achieves full
 ;; compatibility with built-in Emacs features, while being very performant and
@@ -474,7 +472,13 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
          ("M-s" . consult-history)
          ("M-r" . consult-history))
   :init
-  ;; Use Consult to select xref locations.
+  ;; Tweak the register preview for `consult-register-load',
+  ;; `consult-register-store' and the built-in commands. This improves the
+  ;; register formatting, adds thin separator lines, register sorting and hides
+  ;; the window mode line.
+  (advice-add #'register-preview :override #'consult-register-window)
+  (setq register-preview-delay 0.5)
+  ;; Use Consult to select xref locations with preview.
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref))
 
@@ -494,8 +498,7 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;; Better integration between Consult and Embark.
 (use-package embark-consult
   :ensure t
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; `transient' is needed by Magit. For some reason Elpaca cannot pull it as a
 ;; dependency so it must be installed explicitly.
@@ -516,10 +519,8 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;; Source control gutter indicators.
 (use-package diff-hl
   :ensure t
-  :config
-  ;; Refresh before and after Magit operations.
-  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
+  :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
+         (magit-post-refresh . diff-hl-magit-post-refresh))
   :custom
   ;; Slightly faster algorithm for diffing.
   (vc-git-diff-switches '("--histogram"))

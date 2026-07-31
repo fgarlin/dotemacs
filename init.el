@@ -373,9 +373,15 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
 ;; Cape provides extra completions or capfs (`completion-at-point-functions').
 (use-package cape
   :ensure t
-  :hook (completion-at-point-functions . (cape-dabbrev
-                                          cape-file
-                                          cape-elisp-block)))
+  ;; Bind prefix keymap providing all Cape commands.
+  :bind ("C-c p" . cape-prefix-map)
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'. The order of the functions matters, the
+  ;; first function returning a result wins. Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
 ;; Vertico displays the minibuffer in a vertical layout. It achieves full
 ;; compatibility with built-in Emacs features, while being very performant and
@@ -418,7 +424,7 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :ensure t
   :custom
   (completion-styles '(orderless basic))
-  (completion-category-overrides nil)
+  (completion-category-overrides '((file (styles partial-completion))))
   (completion-category-defaults nil)
   (completion-pcm-leading-wildcard t))
 

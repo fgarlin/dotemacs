@@ -629,9 +629,10 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   (c-ts-mode-indent-offset 4)
   (c-ts-mode-indent-style #'my/c-ts-indent-style))
 
-;; CMake mode.
-(use-package cmake-mode
-  :ensure t)
+;; Random language modes
+(use-package cmake-mode :ensure t)
+(use-package meson-mode :ensure t)
+(use-package glsl-mode  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; Load custom lisp ;;

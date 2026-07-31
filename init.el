@@ -339,6 +339,14 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
+;; Multiple cursors. That's it.
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)
+         ("C-S-c C-S-c" . mc/edit-lines)))
+
 ;; Corfu enhances in-buffer completion. Candidates are shown in a popup below or
 ;; above the point, and can be selected by moving up and down.
 (use-package corfu

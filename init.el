@@ -577,6 +577,35 @@ buffer is in `fundamental-mode', read-only or not file-visiting."
   :custom
   (mood-line-format mood-line-format-default-extended))
 
+;; Terminal emulation inside Emacs.
+(use-package ghostel
+  :ensure t
+  :preface
+  (defun my/ghostel-send-C-k-and-kill ()
+    "Make `C-k' behave like in normal Emacs."
+    (interactive)
+    (kill-ring-save (point) (line-end-position))
+    (ghostel-send-key "k" "ctrl"))
+  :bind (("C-x m" . ghostel)
+         :map ghostel-semi-char-mode-map
+         ("C-k"  . my/ghostel-send-C-k-and-kill)
+         ;; Use consult to search the terminal buffer
+         ("C-s"  . consult-line)
+         ;; Ghostel swallows my `other-window' keybind by default
+         ("M-o"  . other-window)
+         ;; M-p and M-n also go up/down the command history
+         ("M-p" . (lambda () (interactive) (ghostel-send-key "p" "ctrl")))
+         ("M-n" . (lambda () (interactive) (ghostel-send-key "n" "ctrl")))
+         ;; `C-x p p m' opens a terminal in the selected project. `C-x p M' gets
+         ;; a list of terminal buffers running in the current project.
+         :map project-prefix-map
+         ("m" . ghostel-project)
+         ("M" . ghostel-project-list-buffers))
+  :config
+  (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+  (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
+  (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
+
 (use-package treesit
   :ensure nil
   :preface

@@ -28,8 +28,9 @@
 ;; Mainly for Windows.
 (set-terminal-coding-system 'utf-8-unix)
 
-;; Start with a maximized frame.
+;; Start with a maximized frame and no titlebar
 (push '(fullscreen . maximized) initial-frame-alist)
+(push '(undecorated . t)        initial-frame-alist)
 
 ;; Disable UI elements.
 (tool-bar-mode -1)
